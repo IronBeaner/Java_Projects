@@ -1,3 +1,4 @@
+package edu.csupomona.cs.cs241.prog_assgmnt_2;
 import java.util.Random;
 /**
  * CS 241: Data Structures and Algorithms II
