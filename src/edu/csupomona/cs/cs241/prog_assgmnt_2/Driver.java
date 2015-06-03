@@ -16,10 +16,16 @@ public class Driver {
 	
 	public static void main(String[] args){
 	RBT redBlack=new RBT<Integer, Integer>();
-	Random g=new Random();
-	//for(int x=0;x<15;x++)
-	//redBlack.add(g.nextInt(10000),g.nextInt(100));
-	redBlack.add(10, 15);
+	for(int x=0;x<50;x++)
+	redBlack.add(x,x);
+	for(int x=0;x<30;x++){
+		if(x==30)
+			System.out.println(redBlack.toPrettyString());
+		redBlack.remove(x);
+	}
+
+	
+	/*redBlack.add(10, 15);
 	System.out.println(redBlack.toPrettyString());
 	redBlack.add(15, 11);
 	System.out.println(redBlack.toPrettyString());
@@ -59,10 +65,9 @@ public class Driver {
 	redBlack.add(700, 1);
 	System.out.println(redBlack.toPrettyString());
 	//System.out.println(redBlack.toPrettyString());
-	System.out.println(redBlack.remove(1));
-	//System.out.println(redBlack.toPrettyString());
-	//System.out.println(redBlack.lookup(4));
-	//System.out.println(lookup(12,redBlack));
+	System.out.println(redBlack.remove(12));
+	System.out.println(redBlack.toPrettyString());
+	System.out.println(redBlack.lookup(12));
 	//redBlack.numOfNodes();*/
 	System.out.println(redBlack.toPrettyString());
 	}

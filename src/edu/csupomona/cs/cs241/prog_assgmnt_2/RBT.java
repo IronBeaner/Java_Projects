@@ -4,7 +4,6 @@ import java.util.ArrayList;
 enum Color{RED,BLACK,DUMMY};
 
 public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
-	protected int numberOfNodes=0;
 	protected Node root=null;
 	
 	@Override
@@ -16,7 +15,6 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 			root.leftChild.parent=root;
 			root.rightChild=new Node(Color.BLACK);
 			root.rightChild.parent=root;
-			numberOfNodes+=3;
 		}
 		else{
 			Node operatingNode=traverseTreeInsert(key);
@@ -36,10 +34,8 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 		//case 1
 				insertCase0(operatingNode);
 				root.color=Color.BLACK;//put here for extra safety measures!
-				numberOfNodes+=2;
 			}
 		}
-		System.out.println(numberOfNodes+ " Nodes In The Tree"+"\n");   
 	}
 	 
 	
@@ -53,9 +49,6 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 	*This method returns the number of nodes in the Red Black Tree.
 	@return returns the number of nodes in the tree.
 	**/
-	public int numOfNodes(){
-		return numberOfNodes;
-	}
 	private void insertCase0(Node operatingNode){
 		 if (operatingNode.parent == null)
 		        operatingNode.color = Color.BLACK;
@@ -115,7 +108,7 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 		Node operatingNode=root;
 		boolean keyHasNotBeenFound=true;
 		V temp=null;
-		System.out.println("Trying to Find a node with key "+key);
+		System.out.println("Trying to find and remove a node with key, "+key);
 		while(!operatingNode.isLeaf()&&keyHasNotBeenFound){
 			if(key.compareTo(operatingNode.key)==-1){
 				if(operatingNode.leftChild!=null){
@@ -130,7 +123,8 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 				}
 			}
 			if(operatingNode.key==null){
-				System.out.println("Key was not found!");
+				System.out.println("A node with a matching key, "+
+						key+" , was not found.");
 				break;
 			}
 			else if(operatingNode.key.equals(key)){
@@ -140,6 +134,7 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 			}	
 		
 		}
+		System.out.println();
 		return temp;
 	}
 	private void removeCase0(Node operatingNode){
@@ -155,7 +150,7 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 		    }
 		Node child=null;
 		if(operatingNode.leftChild.isLeaf()||operatingNode.rightChild.isLeaf()){
-			System.out.println("trying to get "+operatingNode+" non leaf Child");
+			System.out.println("trying to get "+operatingNode+"'s non leaf Child");
 		  		if(operatingNode.rightChild.isLeaf())
 		  			child=operatingNode.leftChild;
 		  		else
@@ -286,6 +281,7 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 	@Override
 	public V lookup(K key) {
 		Node operatingNode=root;
+		System.out.println("Trying to find a node with key, "+key);
 		while(!operatingNode.isLeaf()){
 			if(key.compareTo(operatingNode.key)==-1){
 				if(operatingNode.leftChild!=null){
@@ -299,11 +295,15 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 					System.out.println("moved right");
 				}
 			}
-			if(operatingNode.isLeaf())
+			if(operatingNode.isLeaf()){
+				System.out.println("A node with a matching key, "+
+						key+" , was not found.");
 				break;
+			}
 			else if (key.equals(operatingNode.key))
 				return operatingNode.value;
 		}
+		System.out.println();
 		return null;
 	}
 	  
@@ -506,12 +506,24 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 		else
 		return false;	
 	}
+	private int depth(Node node) {
+		if (node == null) {
+			return 0;
+		} else {
+			int leftHalf = depth(node.leftChild);
+			int rightHalf = depth(node.rightChild);
+			if (leftHalf > rightHalf) {
+				return leftHalf + 1;
+			} else {
+				return rightHalf + 1;
+			}
+		}
+	}
 	@Override
 	public String toPrettyString() {
-		if(numberOfNodes==0)
+		if(root==null)
 			return null;
-		
-		int levelsOfTree=(int) Math.ceil(Math.log(numberOfNodes)/Math.log(2)+1);
+		int levelsOfTree=depth(root);
 		int maximumNodesInTree=(int) Math.pow(2,levelsOfTree)-1;
 		
 		Node movingNode=root;
@@ -559,8 +571,6 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 		
 		return paddedTree;
 	}
-	
-
 	private class Node{
 		protected Node leftChild,rightChild,parent;
 		protected Color color;
