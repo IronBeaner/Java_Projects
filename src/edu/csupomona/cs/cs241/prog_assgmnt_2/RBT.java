@@ -115,6 +115,7 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 		Node operatingNode=root;
 		boolean keyHasNotBeenFound=true;
 		V temp=null;
+		System.out.println("Trying to Find a node with key "+key);
 		while(!operatingNode.isLeaf()&&keyHasNotBeenFound){
 			if(key.compareTo(operatingNode.key)==-1){
 				if(operatingNode.leftChild!=null){
@@ -128,8 +129,10 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 					System.out.println("moved right");
 				}
 			}
-			if(operatingNode.key==null)
+			if(operatingNode.key==null){
+				System.out.println("Key was not found!");
 				break;
+			}
 			else if(operatingNode.key.equals(key)){
 				keyHasNotBeenFound=false;
 				temp=operatingNode.value;
@@ -146,22 +149,24 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 		        Node successor = inOrderSuccessor(operatingNode);
 		        operatingNode.key=successor.key;
 		        operatingNode.value=successor.value;
-		        successor.key=successor.nonLeafChild().key;
-		        successor.value=successor.nonLeafChild().value;
 		        operatingNode=successor;
-		        
+		        System.out.println("found its inorder Successor,"+" it is "
+		        +successor+" will continue to check on this node and its child.");
 		    }
 		Node child=null;
 		if(operatingNode.leftChild.isLeaf()||operatingNode.rightChild.isLeaf()){
+			System.out.println("trying to get "+operatingNode+" non leaf Child");
 		  		if(operatingNode.rightChild.isLeaf())
 		  			child=operatingNode.leftChild;
 		  		else
-		  			child=operatingNode.leftChild;
-		}
+		  			child=operatingNode.rightChild;
+		  		
+		  		System.out.println("its non leaf child is: "+child);
 		  		if(operatingNode.color==Color.BLACK){
 		  			operatingNode.color=child.color;
 		  			removeCase1(operatingNode);
 		  		}
+		}
 		replaceNode(operatingNode, child);
 	}
 	private void removeCase1(Node operatingNode){
@@ -193,14 +198,14 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 	private void removeCase3(Node operatingNode){
 		if( operatingNode.parent().color==Color.BLACK&&operatingNode.sibling().color==Color.BLACK&&(operatingNode.sibling().leftChild.color==Color.BLACK
 				&&operatingNode.sibling().rightChild.color==Color.BLACK)){
-			System.out.println("remove case 3 triggered");
+			System.out.println("remove case 3 triggered, will recurse on parent.");
 			operatingNode.sibling().color=Color.RED;
 			removeCase1(operatingNode.parent);
 		}
 		else if(operatingNode.parent().color==Color.RED&&operatingNode.sibling().color==Color.BLACK
 				&&operatingNode.sibling().leftChild.color==Color.BLACK&&
 				operatingNode.sibling().rightChild.color==Color.BLACK){
-			System.out.println("remove case 2 triggered");
+			System.out.println("remove case 3 triggered");
 			operatingNode.sibling().color=Color.RED;
 			operatingNode.parent().color=Color.BLACK;
 		}

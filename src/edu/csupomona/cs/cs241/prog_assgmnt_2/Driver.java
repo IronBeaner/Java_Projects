@@ -59,7 +59,7 @@ public class Driver {
 	redBlack.add(700, 1);
 	System.out.println(redBlack.toPrettyString());
 	//System.out.println(redBlack.toPrettyString());
-	System.out.println(redBlack.remove(15));
+	System.out.println(redBlack.remove(1));
 	//System.out.println(redBlack.toPrettyString());
 	//System.out.println(redBlack.lookup(4));
 	//System.out.println(lookup(12,redBlack));
