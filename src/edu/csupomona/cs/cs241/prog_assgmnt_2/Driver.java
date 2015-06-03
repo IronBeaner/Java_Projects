@@ -1,9 +1,6 @@
-//test
-package edu.csupomona.cs.cs241.prog_assgmnt_2;
-import java.util.Random;
 /**
  * CS 241: Data Structures and Algorithms II
- * Professor: Edwin Rodr&iacute;guez
+ * Professor: Edwin Rodriguez
  *
  * Programming Assignment #2
  *
@@ -11,14 +8,15 @@ import java.util.Random;
  *
  * Oscar Nevarez
  */
-
+package edu.csupomona.cs.cs241.prog_assgmnt_2;
+import java.util.Random;
 public class Driver {
 	
 	public static void main(String[] args){
 	RBT redBlack=new RBT<Integer, Integer>();
 	for(int x=0;x<50;x++)
 	redBlack.add(x,x);
-	for(int x=0;x<30;x++){
+	for(int x=0;x<45;x++){
 		if(x==30)
 			System.out.println(redBlack.toPrettyString());
 		redBlack.remove(x);

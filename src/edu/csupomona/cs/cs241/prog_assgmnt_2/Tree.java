@@ -1,7 +1,6 @@
-package edu.csupomona.cs.cs241.prog_assgmnt_2;
 /**
  * CS 241: Data Structures and Algorithms II
- * Professor: Edwin Rodr&iacute;guez
+ * Professor: Edwin Rodriguez
  *
  * Programming Assignment #2
  *
@@ -9,6 +8,7 @@ package edu.csupomona.cs.cs241.prog_assgmnt_2;
  *
  * Oscar Nevarez
  */
+package edu.csupomona.cs.cs241.prog_assgmnt_2;
 
 public interface Tree<K extends Comparable<K>,V> {
 

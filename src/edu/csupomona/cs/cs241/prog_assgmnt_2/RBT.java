@@ -1,3 +1,14 @@
+/**
+ * CS 241: Data Structures and Algorithms II
+ * Professor: Edwin Rodriguez
+ *
+ * Programming Assignment #2
+ *
+ * <RED BLACK TREE>
+ *
+ * Oscar Nevarez
+ */
+
 package edu.csupomona.cs.cs241.prog_assgmnt_2;
 
 import java.util.ArrayList;
@@ -37,18 +48,6 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 			}
 		}
 	}
-	 
-	
-	
-	
-	/** behavior
-	*   post : The number of Nodes in the tree is returned.
-	*         
-	*
-	*
-	*This method returns the number of nodes in the Red Black Tree.
-	@return returns the number of nodes in the tree.
-	**/
 	private void insertCase0(Node operatingNode){
 		 if (operatingNode.parent == null)
 		        operatingNode.color = Color.BLACK;
@@ -56,6 +55,7 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 			 insertCase1(operatingNode);
 	}
 	private void insertCase1(Node operatingNode){
+		//case 1 in class
 		if(operatingNode.parent().color==Color.BLACK){
 			System.out.println("No violation");
 			return;
@@ -64,6 +64,7 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 			insertCase2(operatingNode);
 	}
 	private void insertCase2(Node operatingNode){
+		//case 2 in class
 		if(operatingNode.uncle().color==Color.RED){
 			System.out.println("Case 2 triggered");
 			operatingNode.parent().color=Color.BLACK;
@@ -75,6 +76,7 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 		insertCase3(operatingNode);
 	}
 	private void insertCase3(Node operatingNode){
+		//case 3 in class
 		if(operatingNode.parent().color ==Color.RED&&operatingNode.uncle().color==Color.BLACK&&internalRightNode(operatingNode)){
 			System.out.println("Case 3 triggered");
 			System.out.println("Trying to do a right rotate");
@@ -91,6 +93,7 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 		insertCase4(operatingNode);
 	}
 	private void insertCase4(Node operatingNode){
+		//case 4 in class
 		System.out.println("Case 4 triggered");
 		operatingNode.parent().color=Color.BLACK;
 		operatingNode.grandParent().color=Color.RED;
@@ -122,7 +125,7 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 					System.out.println("moved right");
 				}
 			}
-			if(operatingNode.key==null){
+			if(operatingNode.isLeaf()){
 				System.out.println("A node with a matching key, "+
 						key+" , was not found.");
 				break;
@@ -163,6 +166,9 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 		  		}
 		}
 		replaceNode(operatingNode, child);
+		root.color=Color.BLACK;
+		if(root.isLeaf())
+			root=null;
 	}
 	private void removeCase1(Node operatingNode){
 		if (operatingNode.parent == null){
@@ -173,6 +179,7 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 	        removeCase2(operatingNode);
 	}
 	private void removeCase2(Node operatingNode){
+		//case 1 in class
 		if(operatingNode.sibling().color==Color.RED){
 			 operatingNode.parent.color=Color.RED;
 			 operatingNode.sibling().color=Color.BLACK;
@@ -191,6 +198,7 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 		removeCase3(operatingNode);
 	}
 	private void removeCase3(Node operatingNode){
+		//case 2 in class.
 		if( operatingNode.parent().color==Color.BLACK&&operatingNode.sibling().color==Color.BLACK&&(operatingNode.sibling().leftChild.color==Color.BLACK
 				&&operatingNode.sibling().rightChild.color==Color.BLACK)){
 			System.out.println("remove case 3 triggered, will recurse on parent.");
@@ -208,6 +216,7 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 			removeCase4(operatingNode);
 	}
 	private void removeCase4(Node operatingNode){
+		//case 3 in class
 		if(operatingNode.parent.leftChild==operatingNode&&operatingNode.sibling().color==Color.BLACK
 				&&operatingNode.sibling().leftChild.color==Color.RED&&operatingNode.sibling().rightChild.color==Color.BLACK){
 			System.out.println("remove case 4 triggered");
@@ -231,6 +240,7 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 		else
 			removeCase5(operatingNode);
 	}
+	//case 4 in class
 	private void removeCase5(Node operatingNode){
 		if(operatingNode.parent.leftChild==operatingNode&&
 				operatingNode.sibling().color==Color.BLACK&&externalRightNode(operatingNode.sibling().rightChild)){
@@ -261,13 +271,13 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 	
 	
 	/** behavior
-	*   pre  : The right Child of the node who's inorder successor you want to find is passed in.
-	*   post : the in order successor of the given nodes parent is returned.
+	*   pre  : The node who's in-order successor you want to find is passed in.
+	*   post : the in-order successor of the given node is returned.
 	*          
 	*
 	*
-	*This method rotates nodes right in respect to the supplied pivot.
-	@param operatingNode  The right Child of the node who's in order successor you want to find 
+	*This method find and returns the in-order successor of the parameter node.
+	@param operatingNode  The node whose in-order successor will be found.
 	@return returns the in order successor of the given node parent.
 	**/
 	private Node inOrderSuccessor(Node operatingNode){
@@ -364,7 +374,16 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 		}
 		return null;
 	}
-	
+
+	/** behavior
+	*   pre  : A pivot node must be supplied
+	*   post : Nodes have rotated around the pivot point in a right direction.
+	*          
+	*
+	*
+	*This method rotates nodes right in respect to the supplied pivot.
+	@param operatingNode the pivot node
+	**/
 	private void rightRotate(Node operatingNode){
 		Node left=operatingNode.leftChild;
 		replaceNode(operatingNode,left);
@@ -401,7 +420,7 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 	
 	
 	/** behavior
-	*   pre  : A pivot node must be supplied
+	*   pre  : Two nodes must be supplied, the second Node newNode will be the new parent of the first.
 	*   post : Nodes have rotated around the pivot point in a right direction.
 	*          
 	*
@@ -429,13 +448,13 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 	
 	/** behavior
 	*   pre  : A node must be supplied
-	*   post : Whether the passed in node is an external right Node or not is known.
+	*   post : true if the passed in node is an external right Node.
 	*          
 	*
 	*
 	*This method checks if the passed in node is an external right node.
 	@param OperatingNode the node that will be checked.
-		@return returns whether the given node is an external node on the right side of the tree
+	@return returns true if the given node is an external node on the right side of the tree
 	**/
 	private boolean externalRightNode(Node operatingNode){
 		if(operatingNode.parent().rightChild==operatingNode&&operatingNode.grandParent().rightChild==operatingNode.parent())
@@ -449,13 +468,13 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 	
 	/** behavior
 		*   pre  : A node must be supplied
-		*   post : Whether the passed in node is an external left Node or not is known.
+		*   post : Returns true if the passed in node is an external left Node.
 		*          
 		*
 		*
 		*This method checks if the passed in node is an external left node.
 		@param OperatingNode the node that will be checked.
-		@return returns whether the given node is an external node on the left side of the tree
+		@return returns true if the given node is an external node on the left side of the tree
 		**/
 	private boolean externalLeftNode(Node operatingNode){
 		if(operatingNode.parent().leftChild==operatingNode&&operatingNode.grandParent().leftChild==
@@ -471,13 +490,13 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 	
 	/** behavior
 	*   pre  : A node must be supplied
-	*   post : Whether the passed in node is an internal left Node or not is known.
+	*   post : Returns true if the passed in node is an internal left Node.
 	*          
 	*
 	*
 	*This method checks if the passed in node is an internal left node.
 	@param OperatingNode the node that will be checked.
-	@return returns whether the given node is an internal node on the left side of the tree
+	@return returns true if the given node is an internal node on the left side of the tree
 	**/
 	private boolean internalLeftNode(Node operatingNode) {
 		if(operatingNode.parent().rightChild==operatingNode&&
@@ -491,13 +510,13 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 	
 	/** behavior
 	*   pre  : A node must be supplied
-	*   post : Whether the passed in node is an internal right Node or not is known.
+	*   post : Returns true if the passed in node is an internal right Node.
 	*          
 	*
 	*
 	*This method checks if the passed in node is an internal right node.
 	@param OperatingNode the node that will be checked.
-	@return returns whether the given node is an internal node on the right side of the tree
+	@return returns true if the given node is an internal node on the right side of the tree
 	**/
 	private boolean internalRightNode(Node operatingNode){
 		if(operatingNode.parent().leftChild==operatingNode&&
@@ -506,12 +525,23 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 		else
 		return false;	
 	}
-	private int depth(Node node) {
-		if (node == null) {
+	/** behavior
+	*   pre  : A node must be supplied
+	*   post : Returns the maximum depth of the tree.
+	*          
+	*
+	*
+	*This method find the largest depth of the tree +1. Note this is equal to the number of levels in the tree.
+	*not the traditional definition of depth in a tree. 
+	@param OperatingNode the node that will be used to calculate the longest depth from.
+	@return returns the maximum depth of the tree
+	**/
+	private int depth(Node operatingNode) {
+		if (operatingNode == null) {
 			return 0;
 		} else {
-			int leftHalf = depth(node.leftChild);
-			int rightHalf = depth(node.rightChild);
+			int leftHalf = depth(operatingNode.leftChild);
+			int rightHalf = depth(operatingNode.rightChild);
 			if (leftHalf > rightHalf) {
 				return leftHalf + 1;
 			} else {
@@ -577,6 +607,12 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 		protected V value;
 		protected K key;
 		
+		/**
+		 * This constructor created new nodes for the RBT, and also adds the black leaves to it.
+		 * @param key the key that will be assigned to the new node
+		 * @param value the value that will be assigned to the new node
+		 * @param nodeColor the color that will be assigned to the new node
+		 */
 		public Node(K key, V value,Color nodeColor){
 			this.color=nodeColor;
 			this.value=value;
@@ -584,20 +620,31 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 			this.leftChild=new Node(Color.BLACK);
 			this.rightChild=new Node(color.BLACK);
 		}
+		/**
+		 * This constructor created either leaves for newly added nodes or dummy nodes for use in the toPrettyString method,
+		 * this depends on the give color passed in.
+		 * @param nodeColor the Color that will be assigned to the node.
+		 */
 		public Node(Color nodeColor){
 			this.color=nodeColor;
 			this.value=null;
 			this.key=null;
 		}
-		//returns the nonleaf child of the attached node, if it exists.
+		/**
+		 * This method returns the nonleaf child of the attached node, if it exists.
+		 * @return returns the nonleaf child of the attached node, if it exists.
+		 */
 		public Node nonLeafChild(){
 			if(this.leftChild.isLeaf())
 				return this.rightChild;
 			else 
 				return this.leftChild;
 		}
-		//sets the attached nodes fields to that of the inserted Node, this is only used
-		//when adding
+		/**
+		 * This method takes the Node argument and set its key, value, L child, R child, and color 
+		 * to the node attached to method call.
+		 * @param insertedNode
+		 */
 		public void setInsertedNode(Node insertedNode){
 			this.key=insertedNode.key;
 			this.value=insertedNode.value;
@@ -608,42 +655,67 @@ public class RBT<K extends Comparable<K>, V> implements Tree<K,V> {
 			System.out.println("its sibling is "+this.sibling());
 			System.out.println("its sibling's parent is "+this.sibling().parent);
 		}
-		//returns the grand parent of the attached node.
+		/**
+		 * This method returns the grand parent of the attached node  if it exists.
+		 * @return returns the grand parent of the attached node.
+		 */
 		public Node grandParent(){
 			if(this.parent!=null&&this.parent.parent!=null)
 				return this.parent.parent;
 			else 
 				return null;
 		}
-		//returns the uncle of the attached node
+		/**
+		 * This method returns the uncle of the attached node, if it exists.
+		 * @return returns the uncle of the attached node
+		 */
 		public Node uncle(){
 			if(this.parent().sibling()!=null)
 				return this.parent().sibling();
 			else 
 				return null;
 		}
-		//returns the parent of the attached node, REDUNDANT!
+		/**
+		 * This method returns the parent of the attached node  if it exists.s, REDUNDANT!
+		 * @return returns the parent of the attached node, REDUNDANT!
+		 */
 		public Node parent(){
 			if(this.parent!=null)
 				return this.parent;
 			else
 				return null;
 		}
-		//returns the sibling of the attached node
+		/**
+		 * This method returns the sibling of the attached node if it exists.
+		 * @return returns the sibling of the attached node
+		 */
 		public Node sibling(){
-			  assert parent != null; // Root node has no sibling
+			  if (parent != null){ // Root node has no sibling
 			    if (this == parent.leftChild)
 			        return parent.rightChild;
 			    else
 			        return parent.leftChild;
+			  }
+			  else 
+				  return null;
 		}
-		//return whether the attached node is a leaf or not
+		
+		
+		/**
+		 * This method returns true if the node attached to the method call is indeed a leaf.
+		 * @return returns true if the attached node is a leaf or not
+		 */
 		public boolean isLeaf(){
 			if(this.color==Color.BLACK&&this.key==null&&this.value==null)
 				return true;
 			else 
 				return false;
 		}
+		
+		/**
+		 * This method returns the string representation of the object attached to the method call.
+		 * @return returns the string representation of the node attached to the method call.
+		 */
 		public String toString(){
 			if(this.key==null)
 				return "[N N B]";
